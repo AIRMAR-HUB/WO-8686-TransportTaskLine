@@ -1,0 +1,39 @@
+DECLARE
+
+  ROWKEY_         number := 0;
+  CREATED_        number := 0;
+  EXECUTED_      number := 0;
+
+BEGIN
+
+  SELECT  COUNT(ROWKEY), 
+                COUNT(CF$_TIME_CREATED), 
+                COUNT(CF$_TIME_EXECUTED)    INTO     ROWKEY_ ,  CREATED_ ,  EXECUTED_
+          FROM transport_task_line_cft 
+            WHERE  ROWKEY =  '&NEW:ROWKEY';
+
+
+IF '&NEW:TRANSPORT_TASK_STATUS' = 'CREATED'  AND  CREATED_  =  0 THEN
+  IF  ROWKEY_     =  0 THEN
+      INSERT INTO  transport_task_line_cft       VALUES( '&NEW:ROWKEY', sysdate, null);
+ ELSE
+       UPDATE  transport_task_line_cft              SET  CF$_TIME_CREATED = sysdate WHERE  ROWKEY = '&NEW:ROWKEY';
+ END IF;
+END IF;
+
+
+IF '&NEW:TRANSPORT_TASK_STATUS' = 'EXECUTED' AND  EXECUTED_  = 0   THEN
+  IF  ROWKEY_     =  0 THEN
+      INSERT INTO  transport_task_line_cft       VALUES( '&NEW:ROWKEY' , null, sysdate);
+ ELSE
+       UPDATE  transport_task_line_cft              SET  CF$_TIME_EXECUTED = sysdate WHERE  ROWKEY = '&NEW:ROWKEY';
+ END IF;
+END IF;
+
+/*
+EXCEPTION
+ WHEN OTHERS THEN
+   ROLLBACK;
+   DBMS_OUTPUT.PUT_LINE('ERROR (EVENT): '||'ORA');
+*/
+END;

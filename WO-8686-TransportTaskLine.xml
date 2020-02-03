@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<APPLICATION_CONFIGURATION>
+  <EXPORT_DEF_VERSION>1</EXPORT_DEF_VERSION>
+  <PACKAGE_ID>2240769CD9714A48B59CD08DCC9FD02B</PACKAGE_ID>
+  <NAME>WO-8686-TransportTaskLine</NAME>
+  <DESCRIPTION/>
+  <AUTHOR>Airmar Technology Corporation</AUTHOR>
+  <VERSION/>
+  <VERSION_TIME_STAMP>2020-02-02-13.42.34</VERSION_TIME_STAMP>
+  <ORIGIN>IFSDEV-307879-TST1APP9</ORIGIN>
+  <LAST_MODIFIED_DATE>2019-12-12-02.28.27</LAST_MODIFIED_DATE>
+  <ITEMS>
+    <ITEMS_ROW>
+      <NAME>AMR_TRANSPORT_LINES</NAME>
+      <TYPE>CUSTOM_EVENT</TYPE>
+      <DESCRIPTION>Generate a Timestamp for: Line Creation and Line Execution.</DESCRIPTION>
+      <FILENAME>CustomEvent-TransportTaskLine-AMR_TRANSPORT_LINES.xml</FILENAME>
+    </ITEMS_ROW>
+    <ITEMS_ROW>
+      <NAME>Time Executed</NAME>
+      <TYPE>CF_PERSISTENT</TYPE>
+      <DESCRIPTION/>
+      <FILENAME>CustomFieldPersistent-TransportTaskLine-TIME_EXECUTED.xml</FILENAME>
+    </ITEMS_ROW>
+    <ITEMS_ROW>
+      <NAME>Time Created</NAME>
+      <TYPE>CF_PERSISTENT</TYPE>
+      <DESCRIPTION/>
+      <FILENAME>CustomFieldPersistent-TransportTaskLine-TIME_CREATED.xml</FILENAME>
+    </ITEMS_ROW>
+    <ITEMS_ROW>
+      <NAME>0^AMR_TRANSPORT_LINES^TransportTaskLine</NAME>
+      <TYPE>CUSTOM_EVENT_ACTION</TYPE>
+      <DESCRIPTION>Create a timestamp for either a record created or executed.</DESCRIPTION>
+      <FILENAME>CustomEventAction-TransportTaskLine-AMR_TRANSPORT_LINES-0-EXECUTEONLINESQL.xml</FILENAME>
+    </ITEMS_ROW>
+  </ITEMS>
+  <ADDITIONAL_ITEMS>
+    <ADDITIONAL_ITEM>
+      <NAME>Views-TransportTaskLine</NAME>
+      <TYPE>CF_VIEWS</TYPE>
+      <DESCRIPTION>Views Files for TransportTaskLine</DESCRIPTION>
+      <FILENAME>CustomFieldViews-TransportTaskLine.xml</FILENAME>
+    </ADDITIONAL_ITEM>
+  </ADDITIONAL_ITEMS>
+</APPLICATION_CONFIGURATION>
