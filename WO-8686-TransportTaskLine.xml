@@ -1,12 +1,15 @@
 <?xml version="1.0"?>
 <APPLICATION_CONFIGURATION>
   <EXPORT_DEF_VERSION>1</EXPORT_DEF_VERSION>
+  <EXPORT_COMMENT>1.) Updated Custom field, Time Executed, to &quot;Updateable&quot;
+2.) Custom Event: Changed the code, so that there is no direct table Insert or Update
+3.) Created DB package to accomodate the creation of a DB Job</EXPORT_COMMENT>
   <PACKAGE_ID>2240769CD9714A48B59CD08DCC9FD02B</PACKAGE_ID>
   <NAME>WO-8686-TransportTaskLine</NAME>
   <DESCRIPTION/>
   <AUTHOR>Airmar Technology Corporation</AUTHOR>
-  <VERSION/>
-  <VERSION_TIME_STAMP>2020-02-02-13.42.34</VERSION_TIME_STAMP>
+  <VERSION>02</VERSION>
+  <VERSION_TIME_STAMP>2020-02-11-09.37.54</VERSION_TIME_STAMP>
   <ORIGIN>IFSDEV-307879-TST1APP9</ORIGIN>
   <LAST_MODIFIED_DATE>2019-12-12-02.28.27</LAST_MODIFIED_DATE>
   <ITEMS>

@@ -14,6 +14,15 @@ $SQL=DECLARE
 -  ROWKEY_         number := 0;
 -  CREATED_        number := 0;
 -  EXECUTED_      number := 0;
+-  sysdate_                 VARCHAR2(2000)        := TO_CHAR(SYSDATE,&apos;YYYY-MM-DD-HH24.MI.SS&apos;);
+-  --objid_                       VARCHAR2(2000);
+-  info_                          VARCHAR2(2000);
+-  attr_cf_                     VARCHAR2(2000);
+-  attr_                          VARCHAR2(2000);
+-  action_                       VARCHAR2(5)            := &apos;DO&apos;;
+-  TIME_CREATED_       VARCHAR2(2000)       := &apos;CF$_TIME_CREATED&apos; || CHR(31) || sysdate_ || CHR(30) ||&apos;&apos; ;
+-  TIME_EXECUTED_      VARCHAR2(2000)       := &apos;CF$_TIME_EXECUTED&apos; || CHR(31) || sysdate_ || CHR(30) ||&apos;&apos; ;
+-
 -
 -BEGIN
 -
@@ -23,30 +32,26 @@ $SQL=DECLARE
 -          FROM transport_task_line_cft 
 -            WHERE  ROWKEY =  &apos;&amp;NEW:ROWKEY&apos;;
 -
+---SELECT objid  INTO  objid_  
+---   FROM TRANSPORT_TASK_LINE      WHERE objkey =  &apos;&amp;NEW:ROWKEY&apos;;
 -
--IF &apos;&amp;NEW:TRANSPORT_TASK_STATUS&apos; = &apos;CREATED&apos;  AND  CREATED_  =  0 THEN
--  IF  ROWKEY_     =  0 THEN
--      INSERT INTO  transport_task_line_cft       VALUES( &apos;&amp;NEW:ROWKEY&apos;, sysdate, null);
-- ELSE
--       UPDATE  transport_task_line_cft              SET  CF$_TIME_CREATED = sysdate WHERE  ROWKEY = &apos;&amp;NEW:ROWKEY&apos;;
-- END IF;
+-IF &apos;&amp;NEW:TRANSPORT_TASK_STATUS&apos; = &apos;CREATED&apos;  AND  CREATED_  =  0  AND   ROWKEY_   =  0   THEN
+-      attr_cf_ := TIME_CREATED_;
+-      Airm1app.AMR_TRANSPORT_TASK_LINE_API.Submit_Job(&apos;&amp;NEW:ROWKEY&apos;, attr_cf_, attr_, action_);
 -END IF;
 -
 -
--IF &apos;&amp;NEW:TRANSPORT_TASK_STATUS&apos; = &apos;EXECUTED&apos; AND  EXECUTED_  = 0   THEN
--  IF  ROWKEY_     =  0 THEN
--      INSERT INTO  transport_task_line_cft       VALUES( &apos;&amp;NEW:ROWKEY&apos; , null, sysdate);
-- ELSE
--       UPDATE  transport_task_line_cft              SET  CF$_TIME_EXECUTED = sysdate WHERE  ROWKEY = &apos;&amp;NEW:ROWKEY&apos;;
-- END IF;
+-IF &apos;&amp;NEW:TRANSPORT_TASK_STATUS&apos; = &apos;EXECUTED&apos; AND  EXECUTED_  = 0  AND  ROWKEY_   !=  0 THEN
+-      attr_cf_ := TIME_EXECUTED_ ;
+-     Airm1app.AMR_TRANSPORT_TASK_LINE_API.Submit_Job(&apos;&amp;NEW:ROWKEY&apos;, attr_cf_, attr_, action_);
 -END IF;
 -
--/*
+-
 -EXCEPTION
 - WHEN OTHERS THEN
 -   ROLLBACK;
 -   DBMS_OUTPUT.PUT_LINE(&apos;ERROR (EVENT): &apos;||&apos;ORA&apos;);
--*/
+-
 -END;
 </ACTION_PARAMETERS>
     <FND_EVENT_ACTION_TYPE_DB>EXECUTEONLINESQL</FND_EVENT_ACTION_TYPE_DB>
@@ -59,7 +64,7 @@ $NEW:TRANSPORT_TASK_STATUS=</CONDITION_VALUE>
     <DESCRIPTION>Create a timestamp for either a record created or executed.</DESCRIPTION>
     <SUBSCRIBABLE>FALSE</SUBSCRIBABLE>
     <ROLE/>
-    <DEFINITION_MODIFIED_DATE>2019-12-13-08.30.28</DEFINITION_MODIFIED_DATE>
+    <DEFINITION_MODIFIED_DATE>2020-02-10-00.20.12</DEFINITION_MODIFIED_DATE>
     <OBJKEY>DC440782F18A4202993243C71C24B21D</OBJKEY>
   </CUSTOM_EVENT_ACTION>
 </CUSTOM_OBJECT>
