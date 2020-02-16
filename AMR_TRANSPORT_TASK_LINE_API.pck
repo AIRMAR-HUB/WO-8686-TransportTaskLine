@@ -3,11 +3,11 @@ create or replace package AMR_TRANSPORT_TASK_LINE_API is
   -- Author  : PRJON
   -- Created : 2/4/2020 9:45:27 PM
   -- Purpose : Info
-
+  
   module_  CONSTANT VARCHAR2(25) := 'AMR';
   lu_name_ CONSTANT VARCHAR2(25) := 'AmrTTLCfp';
   lu_type_ CONSTANT VARCHAR2(25) := 'Entity';
-
+  
   PROCEDURE Create_Date(
    rowkey_     IN     VARCHAR2,
    attr_cf_    IN     VARCHAR2,
@@ -25,8 +25,8 @@ create or replace package AMR_TRANSPORT_TASK_LINE_API is
    attr_cf_    IN     VARCHAR2,
    attr_       IN     VARCHAR2,
    action_     IN     VARCHAR2 );
-
-
+   
+   
 end AMR_TRANSPORT_TASK_LINE_API;
 /
 create or replace package body AMR_TRANSPORT_TASK_LINE_API is
@@ -39,34 +39,29 @@ PROCEDURE Create_Date(
                  IS PRAGMA AUTONOMOUS_TRANSACTION;
   info_        VARCHAR2(2000);
   rowid_       VARCHAR2(2000);
-  attr_cfx_    VARCHAR2(2000);
+  attr_cfx_    VARCHAR2(2000);  
   count_       NUMBER := 0;
-  START_TIME_  DATE := SYSDATE;
+  START_TIME_  DATE := SYSDATE;  
   parms_       VARCHAR2(2000);
   DEADLOCK_    EXCEPTION;
 BEGIN
   attr_cfx_  := attr_cf_;
-
+     
   WHILE (count_ = 0) LOOP
    SELECT count(t.objid) INTO count_
-    FROM TRANSPORT_TASK_LINE t
+    FROM TRANSPORT_TASK_LINE t  
      WHERE objkey = rowkey_;
    IF ((SYSDATE - START_TIME_) > .00012) THEN
         RAISE DEADLOCK_;
    END IF;
      END LOOP;
 
-  SELECT objid  INTO  rowid_
+  SELECT objid  INTO  rowid_  
     FROM TRANSPORT_TASK_LINE  WHERE objkey =  rowkey_;
-
+    
   Airm1app.TRANSPORT_TASK_LINE_CFP.Cf_New__ (info_, rowid_, attr_cfx_, attr_, action_);
-
+            
   COMMIT;
-  EXCEPTION
-    WHEN DEADLOCK_ THEN
-     DBMS_OUTPUT.PUT_LINE('ERROR1 (CREATE_DATE)');
-     ROLLBACK;
-
 END Create_Date;
 
 PROCEDURE Run_Proc(
@@ -79,20 +74,20 @@ IS PRAGMA AUTONOMOUS_TRANSACTION;
   rowid_       VARCHAR2(2000);
   attr_cfx_    VARCHAR2(2000);
   count_       NUMBER := 0;
-  START_TIME_  DATE := SYSDATE;
+  START_TIME_  DATE := SYSDATE;  
   parms_       VARCHAR2(2000);
   DEADLOCK_    EXCEPTION;
 BEGIN
 
    WHILE (count_ = 0) LOOP
      SELECT count(t.objid) INTO count_
-       FROM TRANSPORT_TASK_LINE t
+       FROM TRANSPORT_TASK_LINE t  
          WHERE objkey = rowkey_;
        IF ((SYSDATE - START_TIME_) > .00012) THEN
          RAISE DEADLOCK_;
       END IF;
    END LOOP;
-
+   
 /*
    CLIENT_SYS.Clear_Attr(parms_);
    CLIENT_SYS.Add_To_Attr('TRANSPORT_LINES', rowkey_,  parms_ );
@@ -100,8 +95,8 @@ BEGIN
    CLIENT_SYS.Add_To_Attr('TRANSPORT_LINES', attr_,    parms_ );
    CLIENT_SYS.Add_To_Attr('TRANSPORT_LINES', action_,  parms_ );
    Transaction_SYS.Deferred_Call('Airm1app.AMR_TRANSPORT_TASK_LINE_API.Create_Date', parms_);
-*/
--- attr_cfx_ := attr_cf_;
+*/ 
+-- attr_cfx_ := attr_cf_;    
 -- Airm1app.TRANSPORT_TASK_LINE_CFP.Cf_New__ (info_, rowid_, attr_cfx_, attr_, action_);
  --Airm1app.TRANSPORT_TASK_LINE_CFP.Cf_Modify__ (info_, rowid_, attr_cfx_, attr_, action_);
 
@@ -131,7 +126,14 @@ BEGIN
   DBMS_OUTPUT.PUT_LINE(' ******** START JOB ******** ');
 
   program_name_:= 'TTL_PROG';
-  dbms_scheduler.drop_program(program_name_, TRUE);
+    
+  BEGIN
+   dbms_scheduler.drop_program(program_name_, TRUE);
+  EXCEPTION
+    WHEN OTHERS THEN
+      DBMS_OUTPUT.PUT_LINE('PROGRAM has not been created.'); 
+  END;
+  
   DBMS_OUTPUT.PUT_LINE(' 1 ');
   DBMS_SCHEDULER.create_program (
     program_name        => program_name_,
@@ -184,9 +186,9 @@ BEGIN
     comments        => 'Job for TRANSPORT TASK LINES');
 
   DBMS_OUTPUT.PUT_LINE(' ******** RUN JOB ******** ');
-
+ 
   dbms_scheduler.run_job(job_name_, use_current_session => FALSE);
-
+  
   DBMS_OUTPUT.PUT_LINE(' ******** COMPLETED JOB ******** ');
 
   COMMIT;
@@ -197,7 +199,7 @@ BEGIN
      ROLLBACK;
 
     WHEN OTHERS THEN
-     DBMS_OUTPUT.PUT_LINE('ERROR2 (Submit_Job): '|| SQLCODE||'..'||SUBSTR(SQLERRM, 1, 300));
+     DBMS_OUTPUT.PUT_LINE('ERROR2 (Submit_Job): '|| SQLCODE||'..'||SUBSTR(SQLERRM, 1, 300));  
      ROLLBACK;
 
 END Submit_Job;
