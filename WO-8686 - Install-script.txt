@@ -1,0 +1,4 @@
+(1.)	Import Application Configuration Package (WO-8686-TransportTaskLine)
+(2.)	Synchronize custom fields (if necessary)
+(3.)	Run new package, AMR_TRANSPORT_TASK_LINE_API.pck
+(4.)	Add columns (column chooser) on Transport Task Lines screen
